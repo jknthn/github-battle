@@ -1,0 +1,2 @@
+//    "deploy": "npm run build && firebase deploy" firebase tools
+//    "firebase-init": "firebase login && firebase init"
