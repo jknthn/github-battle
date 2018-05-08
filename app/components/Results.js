@@ -46,35 +46,32 @@ Player.propTypes = {
 
 class Results extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            winner: null,
-            loser: null,
-            error: null,
-            loading: true,
-        }
+    state = {
+        winner: null,
+        loser: null,
+        error: null,
+        loading: true,
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { playerOneName, playerTwoName} = queryString.parse(this.props.location.search);
-        battle([
+        const players = await battle([
             playerOneName,
             playerTwoName,
-        ]).then((results) => {
-            if (results === null) {
-                return this.setState(() => ({
-                    error: 'Ups! Something wrong happened.',
-                    loading: false
-                }))
-            }
-            this.setState(() => ({
-                error: null,
-                loading: false,
-                winner: results[0],
-                loser: results[1],
-            }));
-        });
+        ]);
+
+        if (players === null) {
+            return this.setState(() => ({
+                error: 'Ups! Something wrong happened.',
+                loading: false
+            }))
+        }
+        this.setState(() => ({
+            error: null,
+            loading: false,
+            winner: players[0],
+            loser: players[1],
+        }));
     }
 
     render() {
